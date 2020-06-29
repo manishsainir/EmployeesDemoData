@@ -8,6 +8,7 @@ router.get("/", function(req, res, next) {
 });
 
 router.post("/insert", function(req, res, next) {
+    console.log('in post');
     employees = new employeesModel({
         username: req.body.username,
         name: req.body.name,
@@ -15,7 +16,17 @@ router.post("/insert", function(req, res, next) {
         emSalary: req.body.salary,
     });
     employessDao.insert(req, res, employees);
+});
 
+router.post('/update', function(req, res) {
+    console.log('in put');
+    var employees = new employeesModel({
+        username: req.body.username,
+        name: req.body.name,
+        emDesignation: req.body.designation,
+        emSalary: req.body.salary,
+    });
+    employessDao.update(req, res, employees);
 });
 
 router.post("/search", function(req, res) {
@@ -25,6 +36,16 @@ router.post("/search", function(req, res) {
         emDesignation: req.body.designation,
     };
     employessDao.search(req, res, data);
+});
+
+router.get("/update", function(req, res) {
+    var username = req.query.username;
+    employessDao.findById(req, res, username);
+});
+
+router.get('/delete', function(req, res) {
+    var username = req.query.username;
+    employessDao.delete(req, res, username);
 });
 
 module.exports = router;

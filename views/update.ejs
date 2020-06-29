@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="container mt-4">
+            <h2 class="mb-4">Update Employee Data</h2>
+            <div class="row ">
+                <div class="col">
+                    <form action="/update" method="POST">
+                        <div class="form-group">
+                            <input type="email" class="form-control " readonly name='username' value="<%=doc.username %>">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control " name='name' value='<%=doc.name %>'>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control " name='designation' placeholder="Designation" value='<%=doc.emDesignation %>'>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control " name='salary' placeholder="Salary" value="<%=doc.emSalary %>">
+                        </div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

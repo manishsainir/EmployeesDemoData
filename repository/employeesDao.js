@@ -22,20 +22,40 @@ module.exports.insert = function(req, res, employees) {
     });
 };
 
+module.exports.update = function(req, res, employees) {
+    var username = employees.username;
+    var toSet = {
+        emDesignation: employees.emDesignation,
+        emSalary: employees.emSalary,
+        name: employees.name
+    };
+    employeesModel.update({ username: username }, { $set: toSet }, function(err, data) {
+        if (err) res.send(403, "Bad Request");
+        findAll(req, res);
+    });
+};
+
+module.exports.delete = function(req, res, username) {
+    employeesModel.deleteOne({ username: username }, function(err, data) {
+        if (err) res.send(403, "Bad Request");
+        findAll(req, res);
+    });
+}
+
 module.exports.search = function(req, res, data) {
     var find = {};
     if (data.name != "" && data.emSalary != "" && data.emDesignation != "") {
         find = data;
-        find.name = { '$regex': data.name, $options: 'i' };
-        find.emDesignation = { '$regex': data.emDesignation, $options: 'i' };
+        find.name = { $regex: data.name, $options: "i" };
+        find.emDesignation = { $regex: data.emDesignation, $options: "i" };
     } else if (
         data.name != "" &&
         data.emSalary != "" &&
         data.emDesignation == ""
     ) {
         find = {
-            name: { '$regex': data.name, $options: 'i' },
-            emSalary: data.emSalary
+            name: { $regex: data.name, $options: "i" },
+            emSalary: data.emSalary,
         };
     } else if (
         data.name != "" &&
@@ -43,8 +63,8 @@ module.exports.search = function(req, res, data) {
         data.emDesignation != ""
     ) {
         find = {
-            name: { '$regex': data.name, $options: 'i' },
-            emDesignation: { '$regex': data.emDesignation, $options: 'i' }
+            name: { $regex: data.name, $options: "i" },
+            emDesignation: { $regex: data.emDesignation, $options: "i" },
         };
     } else if (
         data.name != "" &&
@@ -52,7 +72,7 @@ module.exports.search = function(req, res, data) {
         data.emDesignation == ""
     ) {
         find = {
-            name: { '$regex': data.name, $options: 'i' }
+            name: { $regex: data.name, $options: "i" },
         };
     } else if (
         data.name == "" &&
@@ -61,7 +81,7 @@ module.exports.search = function(req, res, data) {
     ) {
         find = {
             emSalary: data.emSalary,
-            emDesignation: { '$regex': data.emDesignation, $options: 'i' }
+            emDesignation: { $regex: data.emDesignation, $options: "i" },
         };
     } else if (
         data.name == "" &&
@@ -77,13 +97,20 @@ module.exports.search = function(req, res, data) {
         data.emDesignation != ""
     ) {
         find = {
-            emDesignation: { '$regex': data.emDesignation, $options: 'i' }
+            emDesignation: { $regex: data.emDesignation, $options: "i" },
         };
     }
 
     employeesModel.find(find, function(err, doc) {
         if (err) throw err;
         res.render("index", { doc: doc });
+    });
+};
+
+module.exports.findById = function(req, res, username) {
+    employeesModel.findOne({ username: username }, function(err, data) {
+        if (err) throw err;
+        res.render("update", { doc: data });
     });
 };
 
